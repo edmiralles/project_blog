@@ -22,7 +22,7 @@ if (isset($_GET['truncate'])){
     TRUNCATE articles; 
     TRUNCATE categories; 
     TRUNCATE users;
-    SET FOREIGN_KEY_CHECKS = 1
+    SET FOREIGN_KEY_CHECKS = 1;
     ");
 }
 
