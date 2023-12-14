@@ -38,6 +38,9 @@ session_start();
         // false
         if($user && password_verify($mdp, $user['password'])){
             //password-verify arrive à comparer le mdp au mdp haché
+
+            //stocker les infos de l'utilisateur en session
+            $_SESSION['user'] = $user;
             //header va renvoyer vers l'url   
             header('Location: dashboard.php');
             exit;
