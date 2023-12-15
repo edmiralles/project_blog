@@ -54,35 +54,63 @@ $query = $bdd->prepare("SELECT * FROM articles WHERE articles.id = :id");
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 <body>
-<div class="container p-3">
-        <h1>Modifications de l'article</h1>
-        <a href="dashboard.php">Retour</a>
-        <form action="update_article.php?id=<?php echo $article['id']; ?>" method="post" enctype="multipart/form-data">
-            <div class="mb-3">
-                <label for="title" class="form-label">titre</label>
-                <input type="text" class="form-control" id="title" name ="title" value="<?php echo $article['title']; ?>">
-            </div>
-            <div class="mb-3">
-                <label for="content" class="form-label">Contenu</label>
-                <textarea class="form-control" id="content" name ="content" rows="6"><?php echo $article['content']; ?></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="cover" class="form-label">Couverture</label>
-                <input type="file" class="form-control" id="cover" name ="cover">
-            </div>
-            <div class="mb-3">
-                <label for="categories">Categories</label>
-                <select multiple class="form-select form-select-lg mb-3" id="categories" name="categories[]">
-                    <?php foreach($categories as $category): ?>
-                    <option value="<?php echo $category['id']; ?>"
-                    <?php echo in_array($category['id'], $articlesCategories) ? 'selected' : '' ?>
-                    >
-                    <?php echo $category['name']; ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-    </div>
+        <div class="container p-3">
+            <h1>Modifications de l'article</h1>
+            <a href="dashboard.php">Retour</a>
+            <form action="update_article.php?id=<?php echo $article['id']; ?>" method="post" enctype="multipart/form-data">
+                <?php
+                    if(isset($_SESSION['error'])):
+                    ?>
+                <div class="alert alert-danger">
+                    <?php echo $_SESSION['error']; ?>
+                </div>
+                <?php
+                    unset($_SESSION['error']);
+                    endif
+                    ?>
+                <?php
+                    if(isset($_SESSION['validate'])):
+                    ?>
+                <div class="alert alert-success">
+                    <?php echo $_SESSION['validate']; ?>
+                </div>
+                <?php
+                    unset($_SESSION['validate']);
+                    endif
+                    ?>
+                <div class="mb-3">
+                    <label for="title" class="form-label">titre</label>
+                    <input type="text" class="form-control" id="title" name="title"
+                        value="<?php echo $article['title']; ?>">
+                </div>
+                <div class="mb-3">
+                    <label for="content" class="form-label">Contenu</label>
+                    <textarea class="form-control" id="content" name="content"
+                        rows="6"><?php echo $article['content']; ?></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="cover" class="form-label">Couverture</label>
+                    <input type="file" class="form-control" id="cover" name="cover">
+                </div>
+                <div class="mb-3">
+                    <label for="categories">Categories</label>
+                    <select multiple class="form-select form-select-lg mb-3" id="categories" name="categories[]">
+                        <?php foreach($categories as $category): ?>
+                        <option value="<?php echo $category['id']; ?>" <?php echo in_array($category['id'],
+                            $articlesCategories) ? 'selected' : '' ?>
+                            >
+                            <?php echo $category['name']; ?>
+                        </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </body>
+    
+    </html>
+
+
 </body>
 </html>
