@@ -37,8 +37,8 @@ session_start();
                 <input type="password" class="form-control" id="mdp" name ="mdp" required="required">
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
     </div>
-    </form>
 </body>
 
 </html>

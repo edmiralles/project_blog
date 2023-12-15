@@ -10,10 +10,13 @@ require_once '../connexion.php';
 $bdd = connectBdd('root','','blog_db');
 
 //selectionne tous les articles avec leurs categories
-$query = $bdd->query("SELECT articles.id, articles.title, articles.publication_date, GROUP_CONCAT(categories.name, ', ') AS categories
+$query = $bdd->prepare("SELECT articles.id, articles.title, articles.publication_date, GROUP_CONCAT(categories.name, ', ') AS categories
  FROM articles LEFT JOIN article_categories ON article_categories.article_id = articles.id 
- LEFT JOIN categories ON categories.id = article_categories.category_id GROUP BY articles.id;");
-$articles = $query->fetchAll();
+ LEFT JOIN categories ON categories.id = article_categories.category_id
+ WHERE user_id = :id GROUP BY articles.id;");
+ $query->bindValue(':id', $_SESSION['user']['id']);
+ $query->execute();
+ $articles = $query->fetchAll();
 
 ?>
 
@@ -32,11 +35,6 @@ $articles = $query->fetchAll();
     <h1>Administration</h1>
     <a href="logout.php">Déconnexion</a>
 
-    <p> Ici afficher un tableau contenant tous les articles
-        avec les données suivantes :
-        ID, Titre, Catégories, Date de publication et une colonne "actions"</p>
-
-    <p>La colonne "actions" contiendra 2 liens : Editer et Supprimer</p>
     <div class="container mt-5">
         <h2 class="mb-4">Liste des articles </h2>
         <table class="table">
@@ -71,7 +69,7 @@ $articles = $query->fetchAll();
                         echo $date->format('d.m.Y'); ?>
                     </td>
                     <td>
-                        <a href="#" class="btn btn-light btn-sm">Editer</a> -
+                        <a href="edit.php?id=<?php echo $article['id']; ?>" class="btn btn-light btn-sm">Editer</a> -
                         <a href="#" class="btn btn-danger btn-sm">Supprimer</a>
                     </td>
                 </tr>
