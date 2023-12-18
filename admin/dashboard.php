@@ -13,10 +13,11 @@ $bdd = connectBdd('root','','blog_db');
 $query = $bdd->prepare("SELECT articles.id, articles.title, articles.publication_date,GROUP_CONCAT(categories.name SEPARATOR ', ') AS categories
  FROM articles LEFT JOIN article_categories ON article_categories.article_id = articles.id 
  LEFT JOIN categories ON categories.id = article_categories.category_id
- WHERE user_id = :id GROUP BY articles.id;");
+ WHERE user_id = :id GROUP BY articles.id ORDER BY articles.publication_date DESC");
  $query->bindValue(':id', $_SESSION['user']['id']);
  $query->execute();
  $articles = $query->fetchAll();
+
 
 ?>
 
@@ -32,11 +33,28 @@ $query = $bdd->prepare("SELECT articles.id, articles.title, articles.publication
 </head>
 
 <body>
+    <nav class="navbar bg-body-tertiary">
+        <form class="container-fluid justify-content-start">
+            <a href="add.php" class="btn btn-outline-success me-2" >Nouvel article</a>
+            <a href="logout.php" class="btn btn-sm btn-outline-secondary" >Déconnexion</a>
+        </form>
+    </nav>
     <h1>Administration</h1>
-    <a href="logout.php">Déconnexion</a>
+    
 
     <div class="container mt-5">
         <h2 class="mb-4">Liste des articles </h2>
+
+                  <!-- Message de succès -->
+                  <?php if(isset($_SESSION['success'])): ?>
+                <div class="alert alert-success">
+                    <?php
+                    echo $_SESSION['success'];
+                    unset($_SESSION['success']);
+                    ?>
+                </div>
+            <?php endif; ?>
+
         <table class="table">
             <thead>
                 <tr>
@@ -70,11 +88,12 @@ $query = $bdd->prepare("SELECT articles.id, articles.title, articles.publication
                     </td>
                     <td>
                         <a href="edit.php?id=<?php echo $article['id']; ?>" class="btn btn-light btn-sm">Editer</a> -
-                        <a href="#" class="btn btn-danger btn-sm">Supprimer</a>
+                        <a href="delete_article.php?id=<?php echo $article['id']; ?>" class="btn btn-danger btn-sm" 
+                            onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?');">Supprimer</a>
                     </td>
                 </tr>
                 <?php endforeach ?>
-                </tbody>
+            </tbody>
         </table>
     </div>
 </body>
