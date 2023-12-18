@@ -36,7 +36,8 @@ $query = $bdd->prepare("SELECT articles.id, articles.title, articles.publication
     <nav class="navbar bg-body-tertiary">
         <form class="container-fluid justify-content-start">
             <a href="add.php" class="btn btn-outline-success me-2" >Nouvel article</a>
-            <a href="logout.php" class="btn btn-sm btn-outline-secondary" >Déconnexion</a>
+            <a href="logout.php" class="btn btn-sm btn-outline-secondary me-2" >Déconnexion</a>
+            <a href="../index.php" class="btn btn-outline-success me-2" > Acceuil </a>
         </form>
     </nav>
     <h1>Administration</h1>
